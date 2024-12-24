@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Báo Tình Nguyện</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='font/themify-icons-font/themify-icons.css') }}">  
+
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .login-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .login-container h1 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<!-- Thanh điều hướng -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: relative;">
+    <div class="container-fluid">
+        <!-- Thêm nút Home để quay lại trang chủ -->
+        <a class="title-name navbar-brand" style="color: #1a5eba;" href="/">VolunHub</a> <!-- Home button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                {% if session['username'] %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/saved">Đã lưu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Đăng xuất</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item-css nav-item">
+                        <a class="nav-link" href="/login">Đăng nhập</a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-partition">
+                        </div>
+                    </li>
+                    <li class="nav-item-css nav-item">
+                        <a class="nav-link" href="/register">Đăng ký</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="user_select_none login-container">
+        <h1>Đăng Nhập</h1>
+        <form method="POST" action="/login">
+            <div class="mb-3">
+                <label for="username" class="user_select_none form-label">Tên Đăng Nhập</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="user_select_none form-label">Mật Khẩu</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Đăng Nhập</button>
+        </form>
+        <p class="text-center mt-3">
+            Chưa có tài khoản? <a href="/register">Đăng ký ngay</a>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>
