@@ -61,7 +61,7 @@
     </nav>
     
     <!-- Nội dung -->
-    <div class="container" style="min-height: 486px;">
+    <div class="container" style="min-height: 486px;  padding-bottom: 32px; padding-top: 100px;">
         <h2>Bài viết đã lưu</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4" id="saved-articles">
             {% for article in articles %}
@@ -79,9 +79,12 @@
                         {% endif %}
 
                         <!-- Thông tin bài báo -->
-                        <h5 class="card-title">{{ article['Tiêu đề'] }}</h5>
+                        <h5 class="card-title">
+                            <a href="{{ article['Link'] }}" target="_blank" style="color: inherit;">
+                                {{ article['Tiêu đề'] }}
+                            </a>
+                        </h5>
                         <p class="card-text">{{ article['Mô tả'] }}</p>
-                        <a href="{{ article['Link'] }}" target="_blank" class="btn btn-primary">Read More</a>
                         <p class="text-muted mt-2">Source: {{ article['Nguồn báo'] }}</p>
                         <p class="text-muted">Published At: {{ article['Ngày'] }}</p>
 
@@ -126,7 +129,7 @@
             <p class="implementer-main" style="padding-left: 120px; font-weight: 600;">ĐỊA CHỈ</p>
             <div class="implementer-discrip" style="display: flex; flex-direction: column;">
                 <p1>Trường Đại học Bách Khoa-Đại học Đà Nẵng</p1>      
-                <p1>Khoa Điển tử - Viễn thông</p1>      
+                <p1>Khoa Điện tử - Viễn thông</p1>      
             </div>
         </div>
     </div>
@@ -137,7 +140,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-        $(document).ready(function() {
+    $(document).ready(function() {
     // Khi người dùng bấm nút "Xóa khỏi đã lưu"
     $('.delete-btn').click(function() {
         var article_id = $(this).data('article-id');  // Lấy ID bài viết
@@ -149,6 +152,7 @@
             success: function(response) {
                 if (response.success) {
                     article_element.fadeOut();  // Ẩn bài viết sau khi xóa
+                    location.reload();
                 } else {
                     alert('Đã xảy ra lỗi khi xóa bài viết!');
                 }
@@ -158,7 +162,12 @@
             }
         });
     });
+    window.addEventListener('popstate', function(event) {
+        // Làm mới trang hoặc thực hiện hành động mong muốn
+        location.reload();
+    });
 });
+
 
     </script>
 </body>

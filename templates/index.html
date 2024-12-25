@@ -77,10 +77,8 @@
         </div>
     </nav>
 
-    <div id="content" class="container mt-4">
-        <h1 class="text-center">Báo Tình Nguyện</h1>
-
-        <!-- Thanh tìm kiếm -->
+    <div id="content" class="container mt-4" style="padding-top: 60px;">
+       <!-- Thanh tìm kiếm -->
         <form class="d-flex my-4" method="GET" action="/">
             <input class="form-control me-2" type="search" placeholder="Search..." name="query" aria-label="Search" value="{{ request.args.get('query', '') }}">
             <select class="form-select me-2" name="source">
@@ -107,25 +105,26 @@
                         {% else %}
                             <p class="text-muted">No Logo Available</p>
                         {% endif %}
-
+                    
                         <!-- Tiêu đề bài báo -->
-                        <h5 class="card-title">{{ article['Tiêu đề'] }}</h5>
-
+                        <h5 class="card-title">
+                            <a href="{{ article['Link'] }}" target="_blank" style="color: inherit;">
+                                {{ article['Tiêu đề'] }}
+                            </a>
+                        </h5>
+                    
                         <!-- Mô tả bài báo -->
                         <p class="card-text">{{ article['Mô tả'] }}</p>
-
-                        <!-- Link đến bài báo -->
-                        <a href="{{ article['Link'] }}" target="_blank" class="btn btn-article btn-primary">Read More</a>
-
+                    
                         <!-- Nguồn báo và ngày đăng -->
                         <p class="text-muted mt-2">Source: {{ article['Nguồn báo'] }}</p>
                         <p class="text-muted">Published At: {{ article['Ngày'] }}</p>
-
+                    
                         <!-- Nhãn "Tin mới" -->
                         {% if article['Mới'] == 'Yes' %}
                         <span class="badge bg-success btn-position">Tin mới</span>
                         {% endif %}
-
+                    
                         {% if article['is_saved'] %}
                             <span class="badge bg-info btn-position">Đã lưu</span>
                         {% else %}
@@ -134,7 +133,7 @@
                                 <button class="btn btn-outline-secondary mt-2 save-btn btn-position" data-article-id="{{ article['id'] }}"><i class="ti-bookmark"></i></button>
                             {% endif %}
                         {% endif %}
-                    </div>
+                    </div>   
                 </div>
             </div>
             {% endfor %}
@@ -166,7 +165,7 @@
             <p class="implementer-main" style="padding-left: 120px; font-weight: 600;">ĐỊA CHỈ</p>
             <div class="implementer-discrip" style="display: flex; flex-direction: column;">
                 <p1>Trường Đại học Bách Khoa-Đại học Đà Nẵng</p1>      
-                <p1>Khoa Điển tử - Viễn thông</p1>      
+                <p1>Khoa Điện tử - Viễn thông</p1>      
             </div>
         </div>
     </div>
@@ -174,47 +173,28 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Khi nhấn nút "Lưu bài viết"
-            $('.save-btn').click(function() {
-                var article_id = $(this).data('article-id');
+        // Khi nhấn nút "Lưu bài viết"
+        $('.save-btn').click(function() {
+            var article_id = $(this).data('article-id');
 
-                $.ajax({
-                    url: '/save_article',  // Địa chỉ URL để lưu bài viết
-                    method: 'POST',
-                    data: { article_id: article_id },
-                    success: function(response) {
-                        if (response.success) {
-                            $(this).addClass('saved').attr('disabled', true);  // Thay đổi nút thành "Đã lưu"
-                        } else {
-                            alert('Đã xảy ra lỗi khi lưu bài viết!');
-                        }
-                    }.bind(this),
-                    error: function() {
-                        alert('Có lỗi xảy ra, vui lòng thử lại!');
+            $.ajax({
+                url: '/save_article',  // Địa chỉ URL để lưu bài viết
+                method: 'POST',
+                data: { article_id: article_id },
+                success: function(response) {
+                    if (response.success) {
+                        // Làm mới lại trang sau khi lưu thành công
+                        location.reload();
+                    } else {
+                        alert('Đã xảy ra lỗi khi lưu bài viết!');
                     }
-                });
+                },
+                error: function() {
+                    alert('Có lỗi xảy ra, vui lòng thử lại!');
+                }
             });
         });
-
-        $(document).ready(function() {
-            // Hàm tự động làm mới danh sách bài viết mỗi 5 phút
-            setInterval(function() {
-                $.ajax({
-                    url: '/get_new_articles',  // API trả về bài viết mới nhất
-                    method: 'GET',
-                    success: function(response) {
-                        // Cập nhật bài viết mới vào trang
-                        if (response.success) {
-                            $('#content').html(response.new_articles_html);  // Cập nhật nội dung bài viết
-                        }
-                    },
-                    error: function() {
-                        alert('Có lỗi khi tải bài viết mới!');
-                    }
-                });
-            }, 300000);  // Mỗi 5 phút (300000 ms)
-        });
-
+    });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

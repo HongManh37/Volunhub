@@ -27,8 +27,10 @@
 }
 
 .title-name {
-  padding: 16px;
+  padding: 8px;
+  margin-left: 650px;
   font-weight: 700;
+  font-size: 30px;
 }
 
 .nav-item-css {
@@ -79,6 +81,8 @@
 /* Begin: content */
 #content {
   padding-bottom: 32px;
+  padding-top: 32px;
+  min-height: 650px;
 }
 
 .save-btn {
