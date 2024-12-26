@@ -4,16 +4,16 @@
 }
 
 .ti-user {
-  display: flex; /* Đảm bảo icon nằm gọn trong border */
+  display: flex; 
   align-items: center;
-  justify-content: center; /* Căn giữa icon */
-  width: 36px; /* Kích thước cố định cho icon */
+  justify-content: center; 
+  width: 36px; 
   height: 36px;
-  border: 1px solid #1a5eba; /* Độ dày và màu của border */
-  border-radius: 50%; /* Tạo border hình tròn */
-  font-size: 18px; /* Kích thước icon */
-  color: #333; /* Màu icon */
-  background-color: #f9f9f9; /* Màu nền trong border */
+  border: 1px solid #1a5eba; 
+  border-radius: 50%; 
+  font-size: 18px; 
+  color: #333; 
+  background-color: #f9f9f9; 
 }
 
 
