@@ -52,7 +52,8 @@ def get_articles(query='', date='', category='', source=''):
         params.append(source)
     
     # Sắp xếp theo trạng thái 'is_new' và 'full_datetime'
-    sql += " ORDER BY is_new DESC, full_datetime DESC"
+    sql += " ORDER BY created_at DESC, is_new DESC, full_datetime DESC"
+    # sql += " ORDER BY is_new DESC, full_datetime DESC"
     
     cursor.execute(sql, params)
     articles = cursor.fetchall()

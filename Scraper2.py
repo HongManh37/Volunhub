@@ -118,8 +118,8 @@ for card in cards:
     if exists == 0:
         # Chỉ chèn nếu bài báo chưa tồn tại
         cursor.execute("""
-            INSERT INTO articles (title, link, image_url, displayed_time, full_datetime, is_new, source_name, logo_url, description)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO articles (title, link, image_url, displayed_time, full_datetime, is_new, source_name, logo_url, description, created_at)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, NOW())
         """, (
             title,
             link,
@@ -132,29 +132,30 @@ for card in cards:
             description
         ))
     else:
-        # Nếu bài báo đã tồn tại, kiểm tra xem bài báo có mới hơn không
-        cursor.execute("SELECT full_datetime FROM articles WHERE link = %s", (link,))
-        existing_article_time = cursor.fetchone()[0]
-
-        if existing_article_time and full_datetime and full_datetime > existing_article_time:
-            cursor.execute("""
-                UPDATE articles 
-                SET title = %s, description = %s, image_url = %s, displayed_time = %s, full_datetime = %s, is_new = %s, source_name = %s, logo_url = %s
-                WHERE link = %s
-            """, (
-                title,
-                description,
-                image_url,
-                displayed_time,
-                full_datetime,
-                'Yes',  # Đánh dấu bài viết đã cập nhật là mới
-                source_name,
-                logo_url,
-                link
-            ))
-        else:
-            print(f"Bài báo đã tồn tại và không có thay đổi mới: {title}")
-
+        # Cập nhật thông tin bài báo nếu đã tồn tại
+        cursor.execute("""
+            UPDATE articles
+            SET title = %s,
+                image_url = %s,
+                displayed_time = %s,
+                full_datetime = %s,
+                is_new = %s,
+                source_name = %s,
+                logo_url = %s,
+                description = %s,
+                updated_at = NOW()  -- Thêm trường updated_at để theo dõi thời gian cập nhật
+            WHERE link = %s
+        """, (
+            title,
+            image_url,
+            displayed_time,
+            full_datetime if full_datetime else None,
+            is_new,
+            source_name,
+            logo_url,
+            description,
+            link
+        ))
 # Lưu thay đổi và đóng kết nối
 conn.commit()
 cursor.close()
